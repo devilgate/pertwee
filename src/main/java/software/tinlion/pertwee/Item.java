@@ -28,6 +28,6 @@ public interface Item {
 
     public Author author();
 
-    public List<String> tage();
+    public List<String> tags();
 
 }

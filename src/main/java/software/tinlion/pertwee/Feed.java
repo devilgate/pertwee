@@ -3,6 +3,7 @@
  */
 package software.tinlion.pertwee;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -12,11 +13,6 @@ import java.util.List;
  *
  */
 public interface Feed {
-
-    // public static Feed getFeed(String url) {
-    //
-    // return new Feed();
-    // }
 
     /**
      * Returns the next {@code Item} from the feed. (Not sure about this.)
@@ -43,8 +39,9 @@ public interface Feed {
      * A convenience method to get the contents of nextUrl as a Feed.
      *  
      * @return
+     * @throws IOException 
      */
-    public Feed nextFeed();
+    public Feed nextFeed() throws IOException;
     
     public String icon();
     
