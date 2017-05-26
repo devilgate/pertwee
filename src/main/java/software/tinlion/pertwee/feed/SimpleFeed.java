@@ -22,12 +22,12 @@ public class SimpleFeed implements Feed {
     
     private JsonObject feedObject;
 
-    public static Feed load(final String jsonString) throws IOException {
+    public static Feed fromString(final String jsonString) throws IOException {
         
         return new SimpleFeed(jsonString);
     }
     
-    public static Feed load(URL url) throws IOException {
+    public static Feed fromUrl(URL url) throws IOException {
         
         return new SimpleFeed(url);
     }
@@ -99,7 +99,7 @@ public class SimpleFeed implements Feed {
     @Override
     public Feed nextFeed() throws IOException {
         
-        return SimpleFeed.load(nextUrl());
+        return SimpleFeed.fromString(nextUrl());
     }
 
     @Override
@@ -114,8 +114,8 @@ public class SimpleFeed implements Feed {
 
     @Override
     public Author author() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        return FeedAuthor.fromJson(feedObject.getJsonObject("author"));
     }
 
     @Override

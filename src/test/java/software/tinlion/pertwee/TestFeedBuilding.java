@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import javax.json.JsonArray;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +35,7 @@ public class TestFeedBuilding {
     @Before
     public void setup() throws IOException {
         
-        SIMPLE_FEED = SimpleFeed.load(SIMPLE_EXAMPLE);
+        SIMPLE_FEED = SimpleFeed.fromString(SIMPLE_EXAMPLE);
     }
 
     @Test

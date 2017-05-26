@@ -22,7 +22,7 @@ public class SimpleItem implements Item {
         if (!(value instanceof JsonObject)) {
             
             throw new IllegalStateException("Received a JsonValue which "
-                    + "was not a JsonObject. Value is " + value);
+                    + "is not a JsonObject. Value is " + value);
         }
         
         itemObject = (JsonObject)value;
@@ -85,8 +85,7 @@ public class SimpleItem implements Item {
 
     @Override
     public Author author() {
-        // TODO Auto-generated method stub
-        return null;
+        return FeedAuthor.fromJson(itemObject.getJsonObject("author"));
     }
 
     @Override
