@@ -1,6 +1,8 @@
 package software.tinlion.pertwee;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 
@@ -66,6 +68,23 @@ public class TestFeedBuilding {
     public void itemsArrayLengthIs2() {
         
         assertEquals(2, SIMPLE_FEED.items().size());
+    }
+    
+    @Test
+    public void itemsAreCorrect() {
+        
+        assertTrue(SIMPLE_FEED.hasNextItem());
+        Item i = SIMPLE_FEED.nextItem();
+        assertEquals("2", i.id());
+        assertEquals("This is a second item.", i.contentText());
+        
+        assertTrue(SIMPLE_FEED.hasNextItem());
+        Item i2 = SIMPLE_FEED.nextItem();
+        assertEquals("1", i2.id());
+        assertEquals("<p>Hello, world!</p>", i2.contentHtml());
+        assertEquals("https://example.org/initial-post", i2.url());
+        
+        assertFalse(SIMPLE_FEED.hasNextItem());
     }
 
 }

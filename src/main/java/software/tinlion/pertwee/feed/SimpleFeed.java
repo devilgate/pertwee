@@ -7,12 +7,15 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 
+import software.tinlion.pertwee.Attachment;
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.Feed;
 import software.tinlion.pertwee.Hub;
@@ -21,6 +24,8 @@ import software.tinlion.pertwee.Item;
 public class SimpleFeed implements Feed {
     
     private JsonObject feedObject;
+    private List<Item> itemsInFeed;
+    private int itemsIndex;
 
     public static Feed fromString(final String jsonString) throws IOException {
         
@@ -36,7 +41,6 @@ public class SimpleFeed implements Feed {
         
         JsonReader jReader = Json.createReader(reader);
         feedObject = jReader.readObject();
-//        System.out.printf("%nfeedObject is %s%n%n", feedObject);
         jReader.close();
     }
     
@@ -48,13 +52,33 @@ public class SimpleFeed implements Feed {
     private SimpleFeed(final String jsonString) throws IOException {
         
         this(new StringReader(jsonString));
-        
     }
 
     @Override
+    public boolean hasNextItem() {
+        
+        // Initialise first time through
+        if (itemsInFeed == null) {
+            itemsInFeed = items();
+            itemsIndex = 0;
+            if (itemsInFeed == null) {
+                
+                // Not sure if this is possible, but maybe if there are no items
+                return false;
+            }
+        }
+            return itemsInFeed.size() > 0 && itemsIndex < itemsInFeed.size();
+    }
+    
+    @Override
     public Item nextItem() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        // Initialise first time through
+        if (itemsInFeed == null) {
+            itemsInFeed = items();
+            itemsIndex = 0;
+        }
+        return itemsInFeed.get(itemsIndex++);
     }
 
     @Override
@@ -115,7 +139,11 @@ public class SimpleFeed implements Feed {
     @Override
     public Author author() {
         
-        return FeedAuthor.fromJson(feedObject.getJsonObject("author"));
+        if (feedObject.containsKey("author")) {
+            return FeedAuthor.fromJson(feedObject.getJsonObject("author"));
+        } else {
+            return FeedAuthor.nullAuthor();
+        }
     }
 
     @Override
@@ -136,6 +164,46 @@ public class SimpleFeed implements Feed {
 
     @Override
     public List<Hub> hubs() {
+        
+        if (feedObject.containsKey("hubs")) {
+            
+            return SubHub.parseHubsFromJson(feedObject.getJsonArray("hubs"));
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasExtensions() {
+        
+        Set<Entry<String, JsonValue>> entries = feedObject.entrySet();
+        for (Entry<String, JsonValue> entry : entries) {
+            
+            if (entry.getKey().startsWith("_")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public JsonObject getByName(String name) {
+        
+        if (feedObject.containsKey(name)) {
+            return feedObject.getJsonObject(name);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasAttachments() {
+        
+        return feedObject.containsKey("attachments") 
+                && feedObject.getJsonArray("attachements") != null
+                && !feedObject.getJsonArray("attachments").isEmpty();
+    }
+
+    @Override
+    public List<Attachment> attachments() {
         // TODO Auto-generated method stub
         return null;
     }

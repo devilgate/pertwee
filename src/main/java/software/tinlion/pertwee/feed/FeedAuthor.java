@@ -7,10 +7,22 @@ import software.tinlion.pertwee.Author;
 public class FeedAuthor implements Author {
 
     private final JsonObject object;
+    private static final Author NOBODY = new FeedAuthor();
     
     public static Author fromJson(JsonObject val) {
         
         return new FeedAuthor(val);
+    }
+    
+    public static Author nullAuthor() {
+        
+        return NOBODY;
+    }
+    
+    private FeedAuthor() {
+        // Just used for creating the null author singleton.
+        // The line below is needed to make the compiler happy.
+        object = null;
     }
 
     private FeedAuthor(final JsonObject value) {
@@ -26,7 +38,11 @@ public class FeedAuthor implements Author {
     @Override
     public String name() {
         
-        return object.getString("name");
+        if (object.containsKey("name")) {
+            return object.getString("name");
+        } else {
+            return "";
+        }
     }
 
     @Override
@@ -35,14 +51,18 @@ public class FeedAuthor implements Author {
         if (object.containsKey("url")) {
             return object.getString("url");
         } else {
-            return null;
+            return "";
         }
     }
 
     @Override
     public String avatar() {
         
-        return object.getString("avatar");
+        if (object.containsKey("avatar")) {
+            return object.getString("avatar");
+        } else {
+            return "";
+        }
     }
 
 }

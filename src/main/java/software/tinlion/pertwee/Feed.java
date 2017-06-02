@@ -6,6 +6,8 @@ package software.tinlion.pertwee;
 import java.io.IOException;
 import java.util.List;
 
+import javax.json.JsonObject;
+
 /**
  * The main interface for the Pertwee JSON Feed parser
  * 
@@ -20,6 +22,8 @@ public interface Feed {
      * @return
      */
     public Item nextItem();
+    
+    public boolean hasNextItem();
     
     public String version();
     
@@ -54,5 +58,12 @@ public interface Feed {
     public List<Item> items();
     
     public List<Hub> hubs();
+    
+    public boolean hasAttachments();
+    
+    public List<Attachment> attachments();
 
+    public boolean hasExtensions();
+    
+    public JsonObject getByName(String name);
 }

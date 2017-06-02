@@ -94,4 +94,8 @@ public class SimpleItem implements Item {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return itemObject.toString();
+    }
 }

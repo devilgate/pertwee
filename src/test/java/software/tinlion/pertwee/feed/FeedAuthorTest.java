@@ -31,7 +31,7 @@ public class FeedAuthorTest {
                 .build();
         
         badAuthor = Json.createObjectBuilder()
-                .add("avator", "jpg").build();
+                .add("avatar", "jpg").build();
     }
 
     @Test
@@ -40,7 +40,7 @@ public class FeedAuthorTest {
         Author testy = FeedAuthor.fromJson(goodIfIncompleteAuthor);
         assertEquals("Iain M Banks", testy.name());
         assertEquals("http://blueguy.com/guy.jpg", testy.avatar());
-        assertNull(testy.url());
+        assertEquals("", testy.url());
     }
     
     @Test
