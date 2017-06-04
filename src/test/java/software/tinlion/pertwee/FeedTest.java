@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import software.tinlion.pertwee.feed.SimpleFeed;
 
-public class TestFeedBuilding {
+public class FeedTest {
     
     private static final String SIMPLE_EXAMPLE = "{" + 
             "\"version\": \"https://jsonfeed.org/version/1\"," + 

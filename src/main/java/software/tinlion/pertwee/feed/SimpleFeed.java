@@ -18,12 +18,14 @@ import javax.json.JsonValue;
 import software.tinlion.pertwee.Attachment;
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.Feed;
+import software.tinlion.pertwee.GetIfPresent;
 import software.tinlion.pertwee.Hub;
 import software.tinlion.pertwee.Item;
 
 public class SimpleFeed implements Feed {
     
     private JsonObject feedObject;
+    private GetIfPresent feedGet;
     private List<Item> itemsInFeed;
     private int itemsIndex;
 
@@ -42,6 +44,7 @@ public class SimpleFeed implements Feed {
         JsonReader jReader = Json.createReader(reader);
         feedObject = jReader.readObject();
         jReader.close();
+        feedGet = new GetIfPresent(feedObject);
     }
     
     private SimpleFeed(final URL url) throws IOException {
@@ -84,40 +87,43 @@ public class SimpleFeed implements Feed {
     @Override
     public String version() {
 
-        return feedObject.getJsonString("version").getString();
+        return feedGet.getString("version");
     }
 
     @Override
     public String title() {
         
-        return feedObject.getJsonString("title").getString();
+        return feedGet.getString("title");
     }
 
     @Override
     public String homePageUrl() {
         
-        return feedObject.getJsonString("home_page_url").getString();
+        return feedGet.getString("home_page_url");
     }
 
     @Override
     public String feedUrl() {
         
-        return feedObject.getJsonString("feed_url").getString();
+        return feedGet.getString("feed_url");
     }
 
     @Override
     public String description() {
-        return feedObject.getJsonString("description").getString();
+
+        return feedGet.getString("description");
     }
 
     @Override
     public String userComment() {
-        return feedObject.getJsonString("user_comment").getString();
+        
+        return feedGet.getString("user_comment");
     }
 
     @Override
     public String nextUrl() {
-        return feedObject.getJsonString("next_url").getString();
+        
+        return feedGet.getString("next_url");
     }
 
     @Override
@@ -128,12 +134,14 @@ public class SimpleFeed implements Feed {
 
     @Override
     public String icon() {
-        return feedObject.getJsonString("icon").getString();
+        
+        return feedGet.getString("icon");
     }
 
     @Override
     public String favicon() {
-        return feedObject.getJsonString("favicon").getString();
+        
+        return feedGet.getString("favicon");
     }
 
     @Override
@@ -148,6 +156,7 @@ public class SimpleFeed implements Feed {
 
     @Override
     public boolean hasExpired() {
+        
         return feedObject.getBoolean("expired");
     }
 
@@ -204,8 +213,47 @@ public class SimpleFeed implements Feed {
 
     @Override
     public List<Attachment> attachments() {
-        // TODO Auto-generated method stub
+        
+        if (hasAttachments()) {
+            
+            return AnAttachment.parseHubsFromJson(feedObject.getJsonArray("attachments"));
+        }
         return null;
+    }
+    
+    public String print() {
+        
+        StringBuilder output = new StringBuilder();
+        output
+            .append(version()).append("\n")
+            .append(title()).append("\n")
+            .append(homePageUrl()).append("\n")
+            .append(feedUrl()).append("\n")
+            .append(description()).append("\n")
+            .append(userComment()).append("\n")
+            .append(nextUrl()).append("\n")
+            .append(icon()).append("\n")
+            .append(favicon()).append("\n")
+            .append(author()).append("\n").append("\n")
+            ;
+        
+        for (Item i : items()) {
+            
+            output.append(i.title()).append("\n")
+                .append(i.id()).append("\n")
+                .append(i.dateModified()).append("\n")
+                .append(i.datePublished()).append("\n")
+                .append(i.summary()).append("\n")
+                .append(i.author()).append("\n")
+                .append(i.url()).append("\n")
+                .append(i.tags()).append("\n")
+                .append(i.contentHtml()).append("\n")
+                .append(i.contentText()).append("\n");
+        }
+        
+        // TODO: more 
+        
+        return output.toString();
     }
 
 }

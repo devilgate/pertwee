@@ -8,7 +8,6 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import software.tinlion.pertwee.Attachment;
-import software.tinlion.pertwee.Hub;
 
 public class AnAttachment implements Attachment {
     
@@ -16,15 +15,15 @@ public class AnAttachment implements Attachment {
     
     public static List<Attachment> parseHubsFromJson(JsonArray attachments) {
         
-        List<Hub> hubsList = new ArrayList<>();
+        List<Attachment> attachmentsList = new ArrayList<>();
         if (attachments != null && !attachments.isEmpty()) {
             
-            attachments.forEach( h -> hubsList.add(new SubHub(h)) );
+            attachments.forEach( a -> attachmentsList.add(new AnAttachment(a)) );
         }
-        return hubsList;
+        return attachmentsList;
     }
     
-    private SubHub(final JsonValue value) {
+    private AnAttachment(final JsonValue value) {
         
         if (!(value instanceof JsonObject)) {
             
@@ -32,37 +31,57 @@ public class AnAttachment implements Attachment {
                     + "is not a JsonObject. Value is " + value);
         }
         
-        hub = (JsonObject)value;
+        attachment = (JsonObject)value;
     }
 
 
     @Override
     public String url() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        if (attachment.containsKey("url")) {
+            
+            return attachment.getString("url");
+        }
+        return "";
     }
 
     @Override
     public String mimeType() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        if (attachment.containsKey("mime_type")) {
+            
+            return attachment.getString("mime_type");
+        }
+        return "";
     }
 
     @Override
     public String title() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        if (attachment.containsKey("title")) {
+            
+            return attachment.getString("title");
+        }
+        return "";
     }
 
     @Override
     public long sizeInBytes() {
-        // TODO Auto-generated method stub
+        
+        if (attachment.containsKey("size_in_bytes")) {
+            
+            return attachment.getInt("size_in_bytes");
+        }
         return 0;
     }
 
     @Override
     public long durationInSeconds() {
-        // TODO Auto-generated method stub
+        
+        if (attachment.containsKey("duration_in_seconds")) {
+            
+            return attachment.getInt("duration_in_seconds");
+        }
         return 0;
     }
 

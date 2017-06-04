@@ -6,11 +6,13 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import software.tinlion.pertwee.Author;
+import software.tinlion.pertwee.GetIfPresent;
 import software.tinlion.pertwee.Item;
 
 public class SimpleItem implements Item {
     
     private JsonObject itemObject;
+    private GetIfPresent feedGet;
     
     public static Item parseItem(JsonValue value) {
         
@@ -26,61 +28,73 @@ public class SimpleItem implements Item {
         }
         
         itemObject = (JsonObject)value;
+        feedGet = new GetIfPresent(itemObject);
     }
 
     @Override
     public String id() {
-        return itemObject.getString("id");
+        
+        return feedGet.getString("id");
     }
 
     @Override
     public String contentText() {
-        return itemObject.getString("content_text");
+        
+        return feedGet.getString("content_text");
     }
 
     @Override
     public String contentHtml() {
-        return itemObject.getString("content_html");
+        
+        return feedGet.getString("content_html");
     }
 
     @Override
     public String url() {
-        return itemObject.getString("url");
+        
+        return feedGet.getString("url");
     }
 
     @Override
     public String externalUrl() {
-        return itemObject.getString("external_url");
+        
+        return feedGet.getString("external_url");
     }
 
     @Override
     public String title() {
-        return itemObject.getString("title");
+        
+        return feedGet.getString("title");
     }
 
     @Override
     public String summary() {
-        return itemObject.getString("summary");
+        
+        return feedGet.getString("summary");
     }
 
     @Override
     public String image() {
-        return itemObject.getString("image");
+        
+        return feedGet.getString("image");
     }
 
     @Override
     public String bannerImage() {
-        return itemObject.getString("banner_image");
+        
+        return feedGet.getString("banner_image");
     }
 
     @Override
     public String datePublished() {
-        return itemObject.getString("date_published");
+        
+        return feedGet.getString("date_published");
     }
 
     @Override
     public String dateModified() {
-        return itemObject.getString("date_modified");
+        
+        return feedGet.getString("date_modified");
     }
 
     @Override
@@ -90,12 +104,14 @@ public class SimpleItem implements Item {
 
     @Override
     public List<String> tags() {
+        
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public String toString() {
+        
         return itemObject.toString();
     }
 }

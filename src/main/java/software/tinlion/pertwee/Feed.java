@@ -17,20 +17,45 @@ import javax.json.JsonObject;
 public interface Feed {
 
     /**
-     * Returns the next {@code Item} from the feed. (Not sure about this.)
+     * Returns the next {@code Item} from the feed.
      * 
      * @return
      */
     public Item nextItem();
     
+    /**
+     * Tells us whether the feed has another item.
+     * 
+     * @return
+     */
     public boolean hasNextItem();
     
+    /**
+     * The version is required.
+     * 
+     * @return
+     */
     public String version();
     
+    /** 
+     * Title is required.
+     * 
+     * @return
+     */
     public String title();
     
+    /**
+     * This is described as "optional but strongly recommended."
+     * 
+     * @return
+     */
     public String homePageUrl();
     
+    /**
+     * This is described as "optional but strongly recommended."
+     * 
+     * @return
+     */
     public String feedUrl();
     
     public String description();
@@ -66,4 +91,11 @@ public interface Feed {
     public boolean hasExtensions();
     
     public JsonObject getByName(String name);
+
+    /**
+     * Prints the feed;
+     * 
+     * @return
+     */
+    public String print();
 }
