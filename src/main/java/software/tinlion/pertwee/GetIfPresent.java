@@ -2,6 +2,8 @@ package software.tinlion.pertwee;
 
 import javax.json.JsonObject;
 
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
+
 /**
  * Gets a value from a JsonObject if it is there.
  * 
@@ -17,12 +19,19 @@ public class GetIfPresent {
         object = o;
     }
 
-    public String getString(String name) {
+    public String getString(String name, boolean required) 
+            throws RequiredElementNotPresentException {
         
         if (object.containsKey(name)) {
             return object.getString(name);
+        } else if (required) {
+            
+            String message = String.format("Element '%s' is required, but was "
+                    + "not found in the feed.", name);
+            throw new RequiredElementNotPresentException(message);
         }
         
         return "";
+
     }
 }

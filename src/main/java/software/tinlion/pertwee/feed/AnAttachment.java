@@ -8,10 +8,13 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import software.tinlion.pertwee.Attachment;
+import software.tinlion.pertwee.GetIfPresent;
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class AnAttachment implements Attachment {
     
     private final JsonObject attachment;
+    private final GetIfPresent attachmentGetThing;
     
     public static List<Attachment> parseHubsFromJson(JsonArray attachments) {
         
@@ -32,27 +35,20 @@ public class AnAttachment implements Attachment {
         }
         
         attachment = (JsonObject)value;
+        attachmentGetThing = new GetIfPresent(attachment);
     }
 
 
     @Override
-    public String url() {
+    public String url() throws RequiredElementNotPresentException {
         
-        if (attachment.containsKey("url")) {
-            
-            return attachment.getString("url");
-        }
-        return "";
+        return attachmentGetThing.getString("url", true);
     }
 
     @Override
-    public String mimeType() {
+    public String mimeType() throws RequiredElementNotPresentException {
         
-        if (attachment.containsKey("mime_type")) {
-            
-            return attachment.getString("mime_type");
-        }
-        return "";
+        return attachmentGetThing.getString("mime_type", true);
     }
 
     @Override

@@ -21,8 +21,9 @@ import software.tinlion.pertwee.Feed;
 import software.tinlion.pertwee.GetIfPresent;
 import software.tinlion.pertwee.Hub;
 import software.tinlion.pertwee.Item;
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
-public class SimpleFeed implements Feed {
+public class DefaultFeed implements Feed {
     
     private JsonObject feedObject;
     private GetIfPresent feedGet;
@@ -31,15 +32,15 @@ public class SimpleFeed implements Feed {
 
     public static Feed fromString(final String jsonString) throws IOException {
         
-        return new SimpleFeed(jsonString);
+        return new DefaultFeed(jsonString);
     }
     
     public static Feed fromUrl(URL url) throws IOException {
         
-        return new SimpleFeed(url);
+        return new DefaultFeed(url);
     }
     
-    private SimpleFeed(final Reader reader) {
+    private DefaultFeed(final Reader reader) {
         
         JsonReader jReader = Json.createReader(reader);
         feedObject = jReader.readObject();
@@ -47,12 +48,12 @@ public class SimpleFeed implements Feed {
         feedGet = new GetIfPresent(feedObject);
     }
     
-    private SimpleFeed(final URL url) throws IOException {
+    private DefaultFeed(final URL url) throws IOException {
         
         this(new InputStreamReader(url.openStream()));
     }
     
-    private SimpleFeed(final String jsonString) throws IOException {
+    private DefaultFeed(final String jsonString) throws IOException {
         
         this(new StringReader(jsonString));
     }
@@ -85,67 +86,67 @@ public class SimpleFeed implements Feed {
     }
 
     @Override
-    public String version() {
+    public String version() throws RequiredElementNotPresentException {
 
-        return feedGet.getString("version");
+        return feedGet.getString("version", true);
     }
 
     @Override
-    public String title() {
+    public String title() throws RequiredElementNotPresentException {
         
-        return feedGet.getString("title");
+        return feedGet.getString("title", true);
     }
 
     @Override
     public String homePageUrl() {
         
-        return feedGet.getString("home_page_url");
+        return feedGet.getString("home_page_url", false);
     }
 
     @Override
     public String feedUrl() {
         
-        return feedGet.getString("feed_url");
+        return feedGet.getString("feed_url", false);
     }
 
     @Override
     public String description() {
 
-        return feedGet.getString("description");
+        return feedGet.getString("description", false);
     }
 
     @Override
     public String userComment() {
         
-        return feedGet.getString("user_comment");
+        return feedGet.getString("user_comment", false);
     }
 
     @Override
     public String nextUrl() {
         
-        return feedGet.getString("next_url");
+        return feedGet.getString("next_url", false);
     }
 
     @Override
     public Feed nextFeed() throws IOException {
         
-        return SimpleFeed.fromString(nextUrl());
+        return DefaultFeed.fromString(nextUrl());
     }
 
     @Override
     public String icon() {
         
-        return feedGet.getString("icon");
+        return feedGet.getString("icon", false);
     }
 
     @Override
     public String favicon() {
         
-        return feedGet.getString("favicon");
+        return feedGet.getString("favicon", false);
     }
 
     @Override
-    public Author author() {
+    public Author author() throws RequiredElementNotPresentException {
         
         if (feedObject.containsKey("author")) {
             return FeedAuthor.fromJson(feedObject.getJsonObject("author"));
@@ -161,12 +162,17 @@ public class SimpleFeed implements Feed {
     }
 
     @Override
-    public List<Item> items() {
+    public List<Item> items() throws RequiredElementNotPresentException {
         
+        if (!feedObject.containsKey("items")) {
+            
+            throw new RequiredElementNotPresentException("Element 'items' is"
+                    + " required, but was not found in the feed.");
+        }
         List<Item> items = new ArrayList<>();
         for (JsonValue val : feedObject.getJsonArray("items")) {
             
-            items.add(SimpleItem.parseItem(val));
+            items.add(DefaultItem.parseItem(val));
         }
         return items;
     }

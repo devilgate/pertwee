@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import software.tinlion.pertwee.feed.SimpleFeed;
+import software.tinlion.pertwee.feed.DefaultFeed;
 
 public class FeedTest {
     
@@ -37,7 +37,7 @@ public class FeedTest {
     @Before
     public void setup() throws IOException {
         
-        SIMPLE_FEED = SimpleFeed.fromString(SIMPLE_EXAMPLE);
+        SIMPLE_FEED = DefaultFeed.fromString(SIMPLE_EXAMPLE);
     }
 
     @Test

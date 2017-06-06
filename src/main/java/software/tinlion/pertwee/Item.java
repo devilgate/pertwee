@@ -2,9 +2,11 @@ package software.tinlion.pertwee;
 
 import java.util.List;
 
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
+
 public interface Item {
 
-    public String id();
+    public String id() throws RequiredElementNotPresentException;
 
     public String contentText();
 

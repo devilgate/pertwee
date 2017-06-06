@@ -3,7 +3,7 @@ package software.tinlion.pertwee;
 import java.io.IOException;
 import java.net.URL;
 
-import software.tinlion.pertwee.feed.SimpleFeed;
+import software.tinlion.pertwee.feed.DefaultFeed;
 
 /** 
  * Runs and tests the Pertwee library. Just call it with a URL and see what goes to stdout.
@@ -21,7 +21,7 @@ public class Runner {
         }
         
         URL url = new URL(args[0]);
-        Feed feed = SimpleFeed.fromUrl(url);
+        Feed feed = DefaultFeed.fromUrl(url);
         System.out.println(feed.print());
     }
 

@@ -8,18 +8,19 @@ import javax.json.JsonValue;
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.GetIfPresent;
 import software.tinlion.pertwee.Item;
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
-public class SimpleItem implements Item {
+public class DefaultItem implements Item {
     
     private JsonObject itemObject;
     private GetIfPresent feedGet;
     
     public static Item parseItem(JsonValue value) {
         
-        return new SimpleItem(value);
+        return new DefaultItem(value);
     }
     
-    private SimpleItem(JsonValue value) {
+    private DefaultItem(JsonValue value) {
         
         if (!(value instanceof JsonObject)) {
             
@@ -32,69 +33,69 @@ public class SimpleItem implements Item {
     }
 
     @Override
-    public String id() {
+    public String id() throws RequiredElementNotPresentException {
         
-        return feedGet.getString("id");
+        return feedGet.getString("id", true);
     }
 
     @Override
     public String contentText() {
         
-        return feedGet.getString("content_text");
+        return feedGet.getString("content_text", false);
     }
 
     @Override
     public String contentHtml() {
         
-        return feedGet.getString("content_html");
+        return feedGet.getString("content_html", false);
     }
 
     @Override
     public String url() {
         
-        return feedGet.getString("url");
+        return feedGet.getString("url", false);
     }
 
     @Override
     public String externalUrl() {
         
-        return feedGet.getString("external_url");
+        return feedGet.getString("external_url", false);
     }
 
     @Override
     public String title() {
         
-        return feedGet.getString("title");
+        return feedGet.getString("title", false);
     }
 
     @Override
     public String summary() {
         
-        return feedGet.getString("summary");
+        return feedGet.getString("summary", false);
     }
 
     @Override
     public String image() {
         
-        return feedGet.getString("image");
+        return feedGet.getString("image", false);
     }
 
     @Override
     public String bannerImage() {
         
-        return feedGet.getString("banner_image");
+        return feedGet.getString("banner_image", false);
     }
 
     @Override
     public String datePublished() {
         
-        return feedGet.getString("date_published");
+        return feedGet.getString("date_published", false);
     }
 
     @Override
     public String dateModified() {
         
-        return feedGet.getString("date_modified");
+        return feedGet.getString("date_modified", false);
     }
 
     @Override

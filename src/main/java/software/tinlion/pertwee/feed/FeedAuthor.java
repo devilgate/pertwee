@@ -3,13 +3,15 @@ package software.tinlion.pertwee.feed;
 import javax.json.JsonObject;
 
 import software.tinlion.pertwee.Author;
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class FeedAuthor implements Author {
 
     private final JsonObject object;
     private static final Author NOBODY = new FeedAuthor();
     
-    public static Author fromJson(JsonObject val) {
+    public static Author fromJson(JsonObject val) 
+            throws RequiredElementNotPresentException {
         
         return new FeedAuthor(val);
     }
@@ -25,12 +27,13 @@ public class FeedAuthor implements Author {
         object = null;
     }
 
-    private FeedAuthor(final JsonObject value) {
+    private FeedAuthor(final JsonObject value) throws RequiredElementNotPresentException {
 
         object = value;
         if (!object.containsKey("name") && !object.containsKey("url")) {
             
-            throw new IllegalStateException("Author must contain at least on of 'name' and 'url'. "
+            throw new RequiredElementNotPresentException(
+                    "Author must contain at least on of 'name' and 'url'. "
                     + "received value was " + object);
         }
     }
