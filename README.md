@@ -10,7 +10,7 @@ To use it just pass it a feed URL like this:
 
 ```java
 URL url = new URL("http://example.com/feed/json");
-Feed feed = SimpleFeed.fromUrl(url);
+Feed feed = DefaultFeed.fromUrl(url);
 ```
 
 And then process the feed at will.
