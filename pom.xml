@@ -6,7 +6,7 @@
 
     <artifactId>pertwee</artifactId>
 
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>Pertwee</name>
 
@@ -42,7 +42,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/devilgate/pertwee.git</developerConnection>
-      <tag>pertwee-1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <build>
