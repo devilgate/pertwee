@@ -13,7 +13,7 @@ import software.tinlion.pertwee.feed.DefaultFeed;
 
 /**
  * The main interface for the Pertwee JSON Feed parser. See 
- * {@link https://jsonfeed.org/version/1} for the JSON Feed spec.
+ * <a href="https://jsonfeed.org/version/1">the JSON Feed spec</a>.
  * 
  * To get an instance use one of the factory methods in {@link DefaultFeed}.
  * 
@@ -92,7 +92,7 @@ public interface Feed {
      * @return The author details of the feed; see {@link Author}
      * @throws RequiredElementNotPresentException if the contents of the 
      * "<tt>author</tt>" element do not meet their requirements
-     * @see 
+     *  
      */
     public Author author() throws RequiredElementNotPresentException;
     
