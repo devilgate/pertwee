@@ -1,8 +1,6 @@
 package software.tinlion.pertwee.feed;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertthr;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -13,6 +11,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import software.tinlion.pertwee.Author;
+import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class FeedAuthorTest {
     
@@ -46,7 +45,7 @@ public class FeedAuthorTest {
     @Test
     public void incompleteAuthor() {
         
-        exception.expect(IllegalStateException.class);
+        exception.expect(RequiredElementNotPresentException.class);
         @SuppressWarnings("unused")
         Author testBad = FeedAuthor.fromJson(badAuthor);
     }
