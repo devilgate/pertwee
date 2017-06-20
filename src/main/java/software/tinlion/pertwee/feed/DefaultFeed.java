@@ -18,9 +18,9 @@ import javax.json.JsonValue;
 import software.tinlion.pertwee.Attachment;
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.Feed;
-import software.tinlion.pertwee.GetIfPresent;
 import software.tinlion.pertwee.Hub;
 import software.tinlion.pertwee.Item;
+import software.tinlion.pertwee.check.GetIfPresent;
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class DefaultFeed implements Feed {

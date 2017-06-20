@@ -6,8 +6,8 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import software.tinlion.pertwee.Author;
-import software.tinlion.pertwee.GetIfPresent;
 import software.tinlion.pertwee.Item;
+import software.tinlion.pertwee.check.GetIfPresent;
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class DefaultItem implements Item {

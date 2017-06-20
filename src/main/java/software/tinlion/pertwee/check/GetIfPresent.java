@@ -1,4 +1,4 @@
-package software.tinlion.pertwee;
+package software.tinlion.pertwee.check;
 
 import javax.json.JsonObject;
 

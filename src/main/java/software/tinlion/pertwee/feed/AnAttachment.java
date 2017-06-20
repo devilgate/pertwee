@@ -8,7 +8,7 @@ import javax.json.JsonObject;
 import javax.json.JsonValue;
 
 import software.tinlion.pertwee.Attachment;
-import software.tinlion.pertwee.GetIfPresent;
+import software.tinlion.pertwee.check.GetIfPresent;
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class AnAttachment implements Attachment {
