@@ -91,4 +91,14 @@
 
         </plugins>
     </build>
+
+    <distributionManagement>
+        
+        <repository>
+            <id>local-file</id>
+            <name>Local file-based repo</name>
+            <url>file:/Users/martin/Dropbox/programming/repository/</url>
+        </repository>
+        
+    </distributionManagement>
 </project>
