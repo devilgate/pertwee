@@ -14,13 +14,14 @@ public class DefaultItem implements Item {
     
     private JsonObject itemObject;
     private GetIfPresent feedGet;
+    private final Author feedAuthor;
     
-    public static Item parseItem(JsonValue value) {
+    public static Item parseItem(JsonValue value, Author feedAuthor) {
         
-        return new DefaultItem(value);
+        return new DefaultItem(value, feedAuthor);
     }
     
-    private DefaultItem(JsonValue value) {
+    private DefaultItem(JsonValue value, Author feedAuthor) {
         
         if (!(value instanceof JsonObject)) {
             
@@ -29,6 +30,7 @@ public class DefaultItem implements Item {
         }
         
         itemObject = (JsonObject)value;
+        this.feedAuthor = feedAuthor;
         feedGet = new GetIfPresent(itemObject);
     }
 
@@ -100,14 +102,19 @@ public class DefaultItem implements Item {
 
     @Override
     public Author author() {
-        return FeedAuthor.fromJson(itemObject.getJsonObject("author"));
+
+        if (itemObject.containsKey("author")) {
+            return FeedAuthor.fromJson(itemObject.getJsonObject("author"));
+        } else {
+            
+            return feedAuthor;
+        }
     }
 
     @Override
     public List<String> tags() {
         
-        // TODO Auto-generated method stub
-        return null;
+        return feedGet.getStringList("tags");
     }
 
     @Override

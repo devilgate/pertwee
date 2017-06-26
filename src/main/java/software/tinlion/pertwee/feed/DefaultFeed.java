@@ -172,7 +172,7 @@ public class DefaultFeed implements Feed {
         List<Item> items = new ArrayList<>();
         for (JsonValue val : feedObject.getJsonArray("items")) {
             
-            items.add(DefaultItem.parseItem(val));
+            items.add(DefaultItem.parseItem(val, author()));
         }
         return items;
     }
@@ -252,9 +252,16 @@ public class DefaultFeed implements Feed {
                 .append(i.summary()).append("\n")
                 .append(i.author()).append("\n")
                 .append(i.url()).append("\n")
-                .append(i.tags()).append("\n")
                 .append(i.contentHtml()).append("\n")
                 .append(i.contentText()).append("\n");
+            if (!i.tags().isEmpty()) {
+                output.append("[");
+                for (String tag : i.tags()) {
+                    output.append(tag).append(", ");
+                }
+                output.setLength(output.length() - 1); // Remove last comma.
+                output.append("]");
+            }
         }
         
         // TODO: more 

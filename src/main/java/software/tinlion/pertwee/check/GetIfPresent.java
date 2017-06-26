@@ -1,6 +1,11 @@
 package software.tinlion.pertwee.check;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonString;
 
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
@@ -32,6 +37,19 @@ public class GetIfPresent {
         }
         
         return "";
+    }
+    
+    public List<String> getStringList(String name) {
 
+        List<String> values = new ArrayList<>();
+        if (object.containsKey(name)) {
+            
+            JsonArray arr = object.getJsonArray(name);
+            for (JsonString element : arr.getValuesAs(JsonString.class)) {
+                
+                values.add(element.getString());
+            }
+        }
+        return values;
     }
 }
