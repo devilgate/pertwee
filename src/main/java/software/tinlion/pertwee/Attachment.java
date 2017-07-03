@@ -9,7 +9,7 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
        attachments (optional, array) lists related resources. 
        Podcasts, for instance, would include an attachment that’s 
        an audio or video file.
-   </blockqoute>
+   </blockquote>
  * 
  * @author Martin McCallion (martin@tinlion.software)
  *
