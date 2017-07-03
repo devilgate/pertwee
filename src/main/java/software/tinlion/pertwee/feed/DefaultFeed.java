@@ -260,7 +260,7 @@ public class DefaultFeed implements Feed {
                     output.append(tag).append(", ");
                 }
                 output.setLength(output.length() - 1); // Remove last comma.
-                output.append("]");
+                output.append("]\n");
             }
         }
         

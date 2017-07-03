@@ -33,7 +33,7 @@ import software.tinlion.pertwee.feed.DefaultFeed;
  * element means.
  * 
  * @author Martin McCallion (martin@tinlion.software)
- * @version 1.0.0
+ * @version 1.0.1
  *
  */
 public interface Feed {
