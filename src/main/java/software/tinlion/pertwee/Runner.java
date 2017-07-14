@@ -15,7 +15,7 @@ public class Runner {
     
     public static void main(String... args) throws IllegalArgumentException, IOException {
         
-        if (args == null || args[0] == null || args[0].length() == 0) {
+        if (args == null || args.length == 0 || args[0] == null || args[0].length() == 0) {
             
             throw new IllegalArgumentException("I need a URL");
         }

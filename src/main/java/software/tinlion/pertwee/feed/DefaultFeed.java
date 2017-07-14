@@ -1,5 +1,6 @@
 package software.tinlion.pertwee.feed;
 
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -148,8 +149,10 @@ public class DefaultFeed implements Feed {
     @Override
     public Author author() throws RequiredElementNotPresentException {
         
+        
         if (feedObject.containsKey("author")) {
             return FeedAuthor.fromJson(feedObject.getJsonObject("author"));
+            
         } else {
             return FeedAuthor.nullAuthor();
         }
@@ -198,15 +201,6 @@ public class DefaultFeed implements Feed {
             }
         }
         return false;
-    }
-
-    @Override
-    public JsonObject getByName(String name) {
-        
-        if (feedObject.containsKey(name)) {
-            return feedObject.getJsonObject(name);
-        }
-        return null;
     }
 
     @Override

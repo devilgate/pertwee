@@ -17,7 +17,9 @@ public class FeedTest {
             "\"version\": \"https://jsonfeed.org/version/1\"," + 
             "\"title\": \"My Example Feed\"," + 
             "\"home_page_url\": \"https://example.org/\"," + 
-            "\"feed_url\": \"https://example.org/feed.json\"," + 
+            "\"feed_url\": \"https://example.org/feed.json\"," +
+            "\"author\": " +
+                "{\"name\": \"Martin McCallion\"}," +
             "\"items\": [ "+ 
                 "{" + 
                     "\"id\": \"2\"," + 
@@ -31,13 +33,14 @@ public class FeedTest {
                 "} " + 
             "] " + 
         "}";
-    
+
     private Feed SIMPLE_FEED;
     
     @Before
     public void setup() throws IOException {
         
         SIMPLE_FEED = DefaultFeed.fromString(SIMPLE_EXAMPLE);
+        
     }
 
     @Test

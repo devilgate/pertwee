@@ -10,7 +10,8 @@ import javax.json.JsonString;
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 /**
- * Gets a value from a JsonObject if it is there.
+ * Gets a value from a JsonObject if it is there. If not it returns a 
+ * a sensible default: the empty string, or an empty List.
  * 
  * @author martin
  *

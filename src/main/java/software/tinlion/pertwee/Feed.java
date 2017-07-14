@@ -6,8 +6,6 @@ package software.tinlion.pertwee;
 import java.io.IOException;
 import java.util.List;
 
-import javax.json.JsonObject;
-
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 import software.tinlion.pertwee.feed.DefaultFeed;
 
@@ -122,8 +120,6 @@ public interface Feed {
 
     public boolean hasExtensions();
     
-    public JsonObject getByName(String name);
-
     /**
      * Prints the feed;
      * 
