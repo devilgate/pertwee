@@ -16,7 +16,7 @@ public class AnAttachment implements Attachment {
     private final JsonObject attachment;
     private final GetIfPresent attachmentGetThing;
     
-    public static List<Attachment> parseHubsFromJson(JsonArray attachments) {
+    public static List<Attachment> parseAttachmentsFromJson(JsonArray attachments) {
         
         List<Attachment> attachmentsList = new ArrayList<>();
         if (attachments != null && !attachments.isEmpty()) {

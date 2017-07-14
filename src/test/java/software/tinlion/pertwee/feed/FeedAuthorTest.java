@@ -17,6 +17,7 @@ public class FeedAuthorTest {
     
     private JsonObject goodIfIncompleteAuthor;
     private JsonObject badAuthor;
+    private JsonObject completeAuthor;
     
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -31,6 +32,12 @@ public class FeedAuthorTest {
         
         badAuthor = Json.createObjectBuilder()
                 .add("avatar", "jpg").build();
+        
+        completeAuthor = Json.createObjectBuilder()
+                .add("name", "Martin McCallion")
+                .add("url", "http://devilgate.org/blog/")
+                .add("avatar", "http://devilgate.org/pic.jpg")
+                .build();
     }
 
     @Test
@@ -50,5 +57,13 @@ public class FeedAuthorTest {
         Author testBad = FeedAuthor.fromJson(badAuthor);
     }
 
+    @Test 
+    public void completeAuthorOk() {
+        
+        Author testComplete = FeedAuthor.fromJson(completeAuthor);
+        assertEquals("Martin McCallion", testComplete.name());
+        assertEquals("http://devilgate.org/blog/", testComplete.url());
+        assertEquals("http://devilgate.org/pic.jpg", testComplete.avatar());
+    }
 }
 ;

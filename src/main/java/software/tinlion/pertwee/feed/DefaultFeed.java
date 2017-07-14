@@ -216,7 +216,7 @@ public class DefaultFeed implements Feed {
         
         if (hasAttachments()) {
             
-            return AnAttachment.parseHubsFromJson(feedObject.getJsonArray("attachments"));
+            return AnAttachment.parseAttachmentsFromJson(feedObject.getJsonArray("attachments"));
         }
         return null;
     }
