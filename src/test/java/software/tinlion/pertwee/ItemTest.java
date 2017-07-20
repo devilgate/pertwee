@@ -24,7 +24,7 @@ public class ItemTest {
 
     private static final String MR_BRIGHTSIDE = "Mr Brightside";
 
-    private static final String AN_ARBITRARY_TIME = "2017-07-20T16:00:01-14:32";
+    private static final String AN_ARBITRARY_TIME = "2017-07-20T16:00:01-04:30";
 
     private static final String NOT_MUCH = "Not much";
 
