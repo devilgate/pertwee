@@ -1,12 +1,12 @@
 package software.tinlion.pertwee;
 
-/**
- * Represents an item in a feed, eg a blog post, podcast episode, etc.
- */
 import java.util.List;
 
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
+/**
+ * Represents an item in a feed, eg a blog post, podcast episode, etc.
+ */
 public interface Item {
 
     public String id() throws RequiredElementNotPresentException;

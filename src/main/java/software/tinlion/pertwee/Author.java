@@ -8,10 +8,10 @@ package software.tinlion.pertwee;
  */
 public interface Author {
     
-    public String name();
+    String name();
     
-    public String url();
+    String url();
     
-    public String avatar();
+    String avatar();
 
 }

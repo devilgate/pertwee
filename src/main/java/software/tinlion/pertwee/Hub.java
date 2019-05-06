@@ -11,7 +11,7 @@ package software.tinlion.pertwee;
  */
 public interface Hub {
 
-    public String type();
+    String type();
     
-    public String url();
+    String url();
 }

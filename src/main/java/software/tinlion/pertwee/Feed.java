@@ -39,50 +39,50 @@ public interface Feed {
     /**
      * The version is required.
      * 
-     * @return
-     * @throws RequiredElementNotPresentException 
+     * @return the version as a string
+     * @throws RequiredElementNotPresentException for obvious reasons
      */
-    public String version() throws RequiredElementNotPresentException;
+    String version() throws RequiredElementNotPresentException;
     
     /** 
      * Title is required.
      * 
-     * @return
-     * @throws RequiredElementNotPresentException 
+     * @return the title
+     * @throws RequiredElementNotPresentException for obvious reasons
      */
-    public String title() throws RequiredElementNotPresentException;
+    String title() throws RequiredElementNotPresentException;
     
     /**
      * This is described as "optional but strongly recommended."
      * 
-     * @return
+     * @return the URL
      */
-    public String homePageUrl();
+    String homePageUrl();
     
     /**
      * This is described as "optional but strongly recommended."
      * 
-     * @return
+     * @return the URL
      */
-    public String feedUrl();
+    String feedUrl();
     
-    public String description();
+    String description();
     
-    public String userComment();
+    String userComment();
     
-    public String nextUrl();
+    String nextUrl();
     
     /**
      * A convenience method to get the contents of nextUrl as a Feed.
      *  
-     * @return
-     * @throws IOException 
+     * @return the next feed
+     * @throws IOException on problems
      */
-    public Feed nextFeed() throws IOException;
+    Feed nextFeed() throws IOException;
     
-    public String icon();
+    String icon();
     
-    public String favicon();
+    String favicon();
     
     /**
      * Optional, but if present certain elements within it must be present.
@@ -92,38 +92,38 @@ public interface Feed {
      * "<tt>author</tt>" element do not meet their requirements
      *  
      */
-    public Author author() throws RequiredElementNotPresentException;
+    Author author() throws RequiredElementNotPresentException;
     
-    public boolean hasExpired();
+    boolean hasExpired();
     
-    public List<Item> items() throws RequiredElementNotPresentException;
+    List<Item> items() throws RequiredElementNotPresentException;
     
     /**
      * Returns the next {@code Item} from the feed.
      * 
-     * @return
+     * @return the Item
      */
-    public Item nextItem();
+    Item nextItem();
     
     /**
      * Tells us whether the feed has another item.
      * 
-     * @return
+     * @return true if there is a next Item
      */
-    public boolean hasNextItem();
+    boolean hasNextItem();
     
-    public List<Hub> hubs();
+    List<Hub> hubs();
     
-    public boolean hasAttachments();
+    boolean hasAttachments();
     
-    public List<Attachment> attachments();
+    List<Attachment> attachments();
 
-    public boolean hasExtensions();
+    boolean hasExtensions();
     
     /**
      * Prints the feed;
      * 
-     * @return
+     * @return the feed as a string
      */
     public String print();
 }

@@ -16,13 +16,13 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
  */
 public interface Attachment {
 
-    public String url() throws RequiredElementNotPresentException;
+    String url() throws RequiredElementNotPresentException;
     
-    public String mimeType() throws RequiredElementNotPresentException;
+    String mimeType() throws RequiredElementNotPresentException;
     
-    public String title();
+    String title();
     
-    public long sizeInBytes();
+    long sizeInBytes();
     
-    public long durationInSeconds();
+    long durationInSeconds();
 }
