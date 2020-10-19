@@ -3,11 +3,11 @@ package software.tinlion.pertwee;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
+import org.json.JSONObject;
+import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,31 +42,28 @@ public class ItemTest {
     @Before
     public void setUp() throws Exception {
         
-        feedAuthor = FeedAuthor.fromJson(Json.createObjectBuilder()
-                .add("name", "Martin McCallion")
-                .add("url", "http://devilgate.org/blog/")
-                .add("avatar", "http://devilgate.org/pic.jpg")
-                .build());
-        
-        JsonObject objItem = Json.createObjectBuilder()
-                .add("id", "001")
-                .add("content_text", THIS_IS_A_SECOND_ITEM)
-                .add("content_html", HTML_THIS_IS_A_SECOND_ITEM)
-                .add("url", THE_URL)
-                .add("external_url", "")
-                .add("summary", NOT_MUCH)
-                .add("date_modified", AN_ARBITRARY_TIME)
-                .build();
+    	JSONObject objFeedAuthor = new JSONObject();
+    	objFeedAuthor.put("name", "Martin McCallion");
+    	objFeedAuthor.put("url", "http://devilgate.org/blog/");
+    	objFeedAuthor.put("avatar", "http://devilgate.org/pic.jpg");
+    	feedAuthor = FeedAuthor.fromJson(objFeedAuthor);
+    	
+        JSONObject objItem = new JSONObject();
+        objItem.put("id", "001");
+        objItem.put("content_text", THIS_IS_A_SECOND_ITEM);
+        objItem.put("content_html", HTML_THIS_IS_A_SECOND_ITEM);
+        objItem.put("url", THE_URL);
+        objItem.put("external_url", "");
+        objItem.put("summary", NOT_MUCH);
+        objItem.put("date_modified", AN_ARBITRARY_TIME);
         item = DefaultItem.parseItem(objItem, feedAuthor);
         
         // Second item is first but with its own Author and tags
-        JsonObject objItem2 = Json.createObjectBuilder(objItem)
-                .add("author", 
-                     Json.createObjectBuilder()
-                         .add("name", MR_BRIGHTSIDE))
-                .add("tags", Json.createArrayBuilder()
-                        .add(TAG1).add(TAG2).add(TAG3).build())
-                .build();
+        JSONObject objItem2 = new JSONObject(objItem);
+        JSONObject objAuthor = new JSONObject();
+        objAuthor.put("name", MR_BRIGHTSIDE);
+        objItem2.put("author", objAuthor);
+        objItem2.put("tags", new JSONArray(Arrays.asList(TAG1, TAG2, TAG3)));
         itemWithAuthor = DefaultItem.parseItem(objItem2, feedAuthor);
     }
 

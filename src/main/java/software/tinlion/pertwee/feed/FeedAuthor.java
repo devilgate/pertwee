@@ -1,18 +1,16 @@
 package software.tinlion.pertwee.feed;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import org.json.JSONObject;
 
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class FeedAuthor implements Author {
 
-    private final JsonObject object;
+    private final JSONObject object;
     private static final Author NOBODY = new FeedAuthor();
     
-    public static Author fromJson(JsonValue val) 
+    public static Author fromJson(JSONObject val) 
             throws RequiredElementNotPresentException {
         
         return new FeedAuthor(val);
@@ -26,13 +24,13 @@ public class FeedAuthor implements Author {
     private FeedAuthor() {
         // Just used for creating the null author singleton.
         // The line below is needed to make the compiler (and toString) happy.
-        object = Json.createObjectBuilder().build();
+        object = new JSONObject();
     }
 
-    private FeedAuthor(final JsonValue value) throws RequiredElementNotPresentException {
+    private FeedAuthor(final JSONObject value) throws RequiredElementNotPresentException {
 
-        object = (JsonObject)value;
-        if (!object.containsKey("name") && !object.containsKey("url")) {
+        object = (JSONObject)value;
+        if (!object.has("name") && !object.has("url")) {
             
             throw new RequiredElementNotPresentException(
                     "Author must contain at least one of 'name' and 'url'. "
@@ -43,7 +41,7 @@ public class FeedAuthor implements Author {
     @Override
     public String name() {
         
-        if (object.containsKey("name")) {
+        if (!object.optString("name").equals("")) {
             return object.getString("name");
         } else {
             return "";
@@ -53,7 +51,7 @@ public class FeedAuthor implements Author {
     @Override
     public String url() {
    
-        if (object.containsKey("url")) {
+        if (!object.optString("url").equals("")) {
             return object.getString("url");
         } else {
             return "";
@@ -63,7 +61,7 @@ public class FeedAuthor implements Author {
     @Override
     public String avatar() {
         
-        if (object.containsKey("avatar")) {
+        if (!object.optString("avatar").equals("")) {
             return object.getString("avatar");
         } else {
             return "";
