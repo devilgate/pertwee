@@ -3,9 +3,8 @@ package software.tinlion.pertwee.feed;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import software.tinlion.pertwee.Attachment;
 import software.tinlion.pertwee.check.GetIfPresent;
@@ -13,10 +12,10 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class AnAttachment implements Attachment {
     
-    private final JsonObject attachment;
+    private final JSONObject attachment;
     private final GetIfPresent attachmentGetThing;
     
-    public static List<Attachment> parseAttachmentsFromJson(JsonArray attachments) {
+    public static List<Attachment> parseAttachmentsFromJson(JSONArray attachments) {
         
         List<Attachment> attachmentsList = new ArrayList<>();
         if (attachments != null && !attachments.isEmpty()) {
@@ -26,15 +25,15 @@ public class AnAttachment implements Attachment {
         return attachmentsList;
     }
     
-    private AnAttachment(final JsonValue value) {
+    private AnAttachment(final Object value) {
         
-        if (!(value instanceof JsonObject)) {
+        if (!(value instanceof JSONObject)) {
             
             throw new IllegalStateException("Received a JsonValue which "
                     + "is not a JsonObject. Value is " + value);
         }
         
-        attachment = (JsonObject)value;
+        attachment = (JSONObject)value;
         attachmentGetThing = new GetIfPresent(attachment);
     }
 
@@ -54,7 +53,7 @@ public class AnAttachment implements Attachment {
     @Override
     public String title() {
         
-        if (attachment.containsKey("title")) {
+        if (!attachment.optString("title").equals("")) {
             
             return attachment.getString("title");
         }
@@ -64,7 +63,7 @@ public class AnAttachment implements Attachment {
     @Override
     public long sizeInBytes() {
         
-        if (attachment.containsKey("size_in_bytes")) {
+        if (attachment.optInt("size_in_bytes") != 0) {
             
             return attachment.getInt("size_in_bytes");
         }
@@ -74,7 +73,7 @@ public class AnAttachment implements Attachment {
     @Override
     public long durationInSeconds() {
         
-        if (attachment.containsKey("duration_in_seconds")) {
+        if (attachment.optInt("duration_in_seconds") != 0) {
             
             return attachment.getInt("duration_in_seconds");
         }

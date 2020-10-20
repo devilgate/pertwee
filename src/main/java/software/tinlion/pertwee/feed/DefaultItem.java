@@ -2,8 +2,7 @@ package software.tinlion.pertwee.feed;
 
 import java.util.List;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import org.json.JSONObject;
 
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.Item;
@@ -12,24 +11,24 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class DefaultItem implements Item {
     
-    private JsonObject itemObject;
+    private JSONObject itemObject;
     private GetIfPresent feedGet;
     private final Author feedAuthor;
     
-    public static Item parseItem(JsonValue value, Author feedAuthor) {
+    public static Item parseItem(JSONObject value, Author feedAuthor) {
         
         return new DefaultItem(value, feedAuthor);
     }
     
-    private DefaultItem(JsonValue value, Author feedAuthor) {
+    private DefaultItem(JSONObject value, Author feedAuthor) {
         
-        if (!(value instanceof JsonObject)) {
+        if (!(value instanceof JSONObject)) {
             
             throw new IllegalStateException("Received a JsonValue which "
                     + "is not a JsonObject. Value is " + value);
         }
         
-        itemObject = (JsonObject)value;
+        itemObject = (JSONObject)value;
         this.feedAuthor = feedAuthor;
         feedGet = new GetIfPresent(itemObject);
     }
@@ -103,8 +102,8 @@ public class DefaultItem implements Item {
     @Override
     public Author author() {
 
-        if (itemObject.containsKey("author")) {
-            return FeedAuthor.fromJson(itemObject.getJsonObject("author"));
+        if (itemObject.optJSONObject("author") != null) {
+            return FeedAuthor.fromJson(itemObject.getJSONObject("author"));
         } else {
             
             return feedAuthor;

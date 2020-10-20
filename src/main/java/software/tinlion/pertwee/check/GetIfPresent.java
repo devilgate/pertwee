@@ -3,9 +3,8 @@ package software.tinlion.pertwee.check;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonString;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
@@ -18,9 +17,9 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
  */
 public class GetIfPresent {
     
-    private final JsonObject object;
+    private final JSONObject object;
     
-    public GetIfPresent(final JsonObject o) {
+    public GetIfPresent(final JSONObject o) {
         
         object = o;
     }
@@ -28,7 +27,7 @@ public class GetIfPresent {
     public String getString(String name, boolean required) 
             throws RequiredElementNotPresentException {
         
-        if (object.containsKey(name)) {
+        if (!object.optString(name).equals("")) {
             return object.getString(name);
         } else if (required) {
             
@@ -43,12 +42,11 @@ public class GetIfPresent {
     public List<String> getStringList(String name) {
 
         List<String> values = new ArrayList<>();
-        if (object.containsKey(name)) {
+        if (object.optJSONArray(name) != null) {
             
-            JsonArray arr = object.getJsonArray(name);
-            for (JsonString element : arr.getValuesAs(JsonString.class)) {
-                
-                values.add(element.getString());
+            JSONArray arr = object.getJSONArray(name);
+            for (int i = 0; i < arr.length(); i++) {
+                values.add(arr.getString(i));
             }
         }
         return values;

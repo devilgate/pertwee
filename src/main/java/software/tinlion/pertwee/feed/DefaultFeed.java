@@ -1,20 +1,15 @@
 package software.tinlion.pertwee.feed;
 
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
+import org.json.JSONObject;
 
 import software.tinlion.pertwee.Attachment;
 import software.tinlion.pertwee.Author;
@@ -26,7 +21,7 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class DefaultFeed implements Feed {
     
-    private JsonObject feedObject;
+    private JSONObject feedObject;
     private GetIfPresent feedGet;
     private List<Item> itemsInFeed;
     private int itemsIndex;
@@ -41,11 +36,17 @@ public class DefaultFeed implements Feed {
         return new DefaultFeed(url);
     }
     
-    private DefaultFeed(final Reader reader) {
-        
-        JsonReader jReader = Json.createReader(reader);
-        feedObject = jReader.readObject();
-        jReader.close();
+    private DefaultFeed(final Reader reader) throws IOException {
+    	
+        char[] buffer = new char[4096];
+        int numChars;
+        StringBuilder builder = new StringBuilder();
+
+        while ((numChars = reader.read(buffer)) >= 0) {
+        	builder.append(buffer, 0, numChars);
+        }
+
+        feedObject = new JSONObject(builder.toString());
         feedGet = new GetIfPresent(feedObject);
     }
     
@@ -150,8 +151,8 @@ public class DefaultFeed implements Feed {
     public Author author() throws RequiredElementNotPresentException {
         
         
-        if (feedObject.containsKey("author")) {
-            return FeedAuthor.fromJson(feedObject.getJsonObject("author"));
+        if (feedObject.optJSONObject("author") != null) {
+            return FeedAuthor.fromJson(feedObject.getJSONObject("author"));
             
         } else {
             return FeedAuthor.nullAuthor();
@@ -167,15 +168,15 @@ public class DefaultFeed implements Feed {
     @Override
     public List<Item> items() throws RequiredElementNotPresentException {
         
-        if (!feedObject.containsKey("items")) {
+        if (feedObject.optJSONArray("items") == null) {
             
             throw new RequiredElementNotPresentException("Element 'items' is"
                     + " required, but was not found in the feed.");
         }
         List<Item> items = new ArrayList<>();
-        for (JsonValue val : feedObject.getJsonArray("items")) {
+        for (Object val : feedObject.getJSONArray("items")) {
             
-            items.add(DefaultItem.parseItem(val, author()));
+            items.add(DefaultItem.parseItem((JSONObject) val, author()));
         }
         return items;
     }
@@ -183,32 +184,32 @@ public class DefaultFeed implements Feed {
     @Override
     public List<Hub> hubs() {
         
-        if (feedObject.containsKey("hubs")) {
+        if (feedObject.optJSONArray("hubs") != null) {
             
-            return SubHub.parseHubsFromJson(feedObject.getJsonArray("hubs"));
+            return SubHub.parseHubsFromJson(feedObject.getJSONArray("hubs"));
         }
         return null;
     }
 
     @Override
     public boolean hasExtensions() {
-        
-        Set<Entry<String, JsonValue>> entries = feedObject.entrySet();
-        for (Entry<String, JsonValue> entry : entries) {
-            
-            if (entry.getKey().startsWith("_")) {
+    	Iterator<String> iterator = feedObject.keys();
+    	
+    	while (iterator.hasNext()) {
+    		if (iterator.next().startsWith("_")) {
                 return true;
             }
-        }
+    		iterator.remove();
+    	}
         return false;
     }
 
     @Override
     public boolean hasAttachments() {
         
-        return feedObject.containsKey("attachments") 
-                && feedObject.getJsonArray("attachements") != null
-                && !feedObject.getJsonArray("attachments").isEmpty();
+        return feedObject.has("attachments") 
+                && feedObject.optJSONArray("attachements") != null
+                && !feedObject.getJSONArray("attachments").isEmpty();
     }
 
     @Override
@@ -216,7 +217,7 @@ public class DefaultFeed implements Feed {
         
         if (hasAttachments()) {
             
-            return AnAttachment.parseAttachmentsFromJson(feedObject.getJsonArray("attachments"));
+            return AnAttachment.parseAttachmentsFromJson(feedObject.getJSONArray("attachments"));
         }
         return null;
     }

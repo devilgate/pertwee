@@ -2,9 +2,7 @@ package software.tinlion.pertwee.feed;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,9 +13,9 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class FeedAuthorTest {
     
-    private JsonObject goodIfIncompleteAuthor;
-    private JsonObject badAuthor;
-    private JsonObject completeAuthor;
+    private JSONObject goodIfIncompleteAuthor;
+    private JSONObject badAuthor;
+    private JSONObject completeAuthor;
     
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -25,19 +23,17 @@ public class FeedAuthorTest {
     @Before
     public void setup() {
         
-        goodIfIncompleteAuthor = Json.createObjectBuilder()
-                .add("name", "Iain M Banks")
-                .add("avatar", "http://blueguy.com/guy.jpg")
-                .build();
+        goodIfIncompleteAuthor = new JSONObject();
+        goodIfIncompleteAuthor.put("name", "Iain M Banks");
+        goodIfIncompleteAuthor.put("avatar", "http://blueguy.com/guy.jpg");
         
-        badAuthor = Json.createObjectBuilder()
-                .add("avatar", "jpg").build();
+        badAuthor = new JSONObject();
+        badAuthor.put("avatar", "jpg");
         
-        completeAuthor = Json.createObjectBuilder()
-                .add("name", "Martin McCallion")
-                .add("url", "http://devilgate.org/blog/")
-                .add("avatar", "http://devilgate.org/pic.jpg")
-                .build();
+        completeAuthor = new JSONObject();
+        completeAuthor.put("name", "Martin McCallion");
+        completeAuthor.put("url", "http://devilgate.org/blog/");
+        completeAuthor.put("avatar", "http://devilgate.org/pic.jpg");
     }
 
     @Test
