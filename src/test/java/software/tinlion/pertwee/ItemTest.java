@@ -11,7 +11,8 @@ import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gson.Gson;
+import software.tinlion.pertwee.feed.DefaultItem;
+import software.tinlion.pertwee.feed.FeedAuthor;
 
 public class ItemTest {
     
@@ -36,16 +37,16 @@ public class ItemTest {
     
     private Item item;
     private Item itemWithAuthor;
+    private Author feedAuthor;
 
     @Before
     public void setUp() throws Exception {
         
-      	Gson gson = new Gson();
-    	
     	JSONObject objFeedAuthor = new JSONObject();
     	objFeedAuthor.put("name", "Martin McCallion");
     	objFeedAuthor.put("url", "http://devilgate.org/blog/");
     	objFeedAuthor.put("avatar", "http://devilgate.org/pic.jpg");
+    	feedAuthor = FeedAuthor.fromJson(objFeedAuthor);
     	
         JSONObject objItem = new JSONObject();
         objItem.put("id", "001");
@@ -55,8 +56,7 @@ public class ItemTest {
         objItem.put("external_url", "");
         objItem.put("summary", NOT_MUCH);
         objItem.put("date_modified", AN_ARBITRARY_TIME);
-        objItem.put("author", objFeedAuthor);
-        item = gson.fromJson(objItem.toString(), Item.class);
+        item = DefaultItem.parseItem(objItem, feedAuthor);
         
         // Second item is first but with its own Author and tags
         JSONObject objItem2 = new JSONObject(objItem);
@@ -64,99 +64,97 @@ public class ItemTest {
         objAuthor.put("name", MR_BRIGHTSIDE);
         objItem2.put("author", objAuthor);
         objItem2.put("tags", new JSONArray(Arrays.asList(TAG1, TAG2, TAG3)));
-      	itemWithAuthor = gson.fromJson(objItem2.toString(), Item.class);
+        itemWithAuthor = DefaultItem.parseItem(objItem2, feedAuthor);
     }
-    
+
     @Test
     public final void id_created_returnsCorrectValue() {
         
-        assertEquals("001", item.getId());
+        assertEquals("001", item.id());
     }
 
     @Test
     public final void contentText_created_returnsCorrectValue() {
         
-        assertEquals(THIS_IS_A_SECOND_ITEM, item.getContentText());
+        assertEquals(THIS_IS_A_SECOND_ITEM, item.contentText());
     }
 
     @Test
     public final void contentHtml_created_returnsCorrectValue() {
         
-        assertEquals(HTML_THIS_IS_A_SECOND_ITEM, item.getContentHtml());
+        assertEquals(HTML_THIS_IS_A_SECOND_ITEM, item.contentHtml());
     }
 
     @Test
     public final void url_created_returnsCorrectValue() {
         
-        assertEquals(THE_URL, item.getUrl());
+        assertEquals(THE_URL, item.url());
     }
 
     @Test
     public final void externalUrl_created_returnsEmptyString() {
         
-        assertEquals("", item.getExternalUrl());
+        assertEquals("", item.externalUrl());
     }
 
     @Test
-    public final void title_notSet_returnsEmptyNull() {
+    public final void title_notSet_returnsEmptyString() {
         
-        assertEquals(null, item.getTitle());
+        assertEquals("", item.title());
     }
 
     @Test
     public final void summary_created_returnsCorrectValue() {
         
-        assertEquals(NOT_MUCH, item.getSummary());
+        assertEquals(NOT_MUCH, item.summary());
     }
 
     @Test
-    public final void image_notSet_returnsEmptyNull() {
+    public final void image_notSet_returnsEmptyString() {
         
-        assertEquals(null, item.getImage());
+        assertEquals("", item.image());
     }
 
     @Test
-    public final void bannerImage_notSet_returnsNull() {
+    public final void bannerImage_notSet_returnsEmptyString() {
         
-        assertEquals(null, item.getBannerImage());
+        assertEquals("", item.bannerImage());
     }
 
     @Test
-    public final void datePublished_notSet_returnsNull() {
+    public final void datePublished_notSet_returnsEmptyString() {
         
-        assertEquals(null, item.getDatePublished());
+        assertEquals("", item.datePublished());
     }
 
     @Test
     public final void DateModified_created_returnsCorrectValue() {
         
-        assertEquals(AN_ARBITRARY_TIME, item.getDateModified());
+        assertEquals(AN_ARBITRARY_TIME, item.dateModified());
     }
 
     @Test
     public final void author_notSetInItem_returnsFeedAuthor() {
-    	
-        assertEquals("Martin McCallion", item.getAuthor().getName());
-        assertEquals("http://devilgate.org/blog/", item.getAuthor().getUrl());
-        assertEquals("http://devilgate.org/pic.jpg", item.getAuthor().getAvatar());   
+        
+        assertEquals(feedAuthor, item.author());
     }
     
     @Test
     public final void author_setInItem_returnsItemAuthor() {
         
-        assertEquals(MR_BRIGHTSIDE, itemWithAuthor.getAuthor().getName());
+        assertEquals(MR_BRIGHTSIDE, itemWithAuthor.author().name());
     }
 
     @Test
     public final void tags_notSet_returnsEmptyList() {
         
-        assertTrue(item.getTags().isEmpty());
+        assertTrue(item.tags().isEmpty());
     }
     
     @Test 
     public final void tags_set_returnsListOfStrings() {
         
-        List<String> tags = itemWithAuthor.getTags();
+        List<String> tags = itemWithAuthor.tags();
         assertEquals(TAG1, tags.get(0));
         assertEquals(TAG2, tags.get(1));
         assertEquals(TAG3, tags.get(2));

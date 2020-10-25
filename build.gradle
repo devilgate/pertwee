@@ -36,14 +36,10 @@ repositories {
 dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:28.2-jre'
-    
+
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.json:json:20200518'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
-    
-    // This dependency is used internally for testing, and not exposed to consumers on their own compile classpath.
-    testImplementation 'org.json:json:20200518'
-    
 }

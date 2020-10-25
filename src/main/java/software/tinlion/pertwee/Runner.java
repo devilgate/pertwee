@@ -22,7 +22,7 @@ public class Runner {
         
         URL url = new URL(args[0]);
         Feed feed = DefaultFeed.fromUrl(url);
-        System.out.println(feed);
+        System.out.println(feed.print());
     }
 
 }

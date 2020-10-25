@@ -9,21 +9,9 @@ package software.tinlion.pertwee;
  * @author Martin McCallion (martin@tinlion.software)
  *
  */
-public class Hub {
+public interface Hub {
 
-	private String type;
-	private Author url;
-	
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public Author getUrl() {
-		return url;
-	}
-	public void setUrl(Author url) {
-		this.url = url;
-	}
+    String type();
+    
+    String url();
 }
