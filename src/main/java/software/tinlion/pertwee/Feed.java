@@ -1,12 +1,12 @@
-/**
- * 
- */
 package software.tinlion.pertwee;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
+import com.google.gson.annotations.SerializedName;
+
 import software.tinlion.pertwee.feed.DefaultFeed;
 
 /**
@@ -34,96 +34,236 @@ import software.tinlion.pertwee.feed.DefaultFeed;
  * @version 1.0.1
  *
  */
-public interface Feed {
+public class Feed {
+	
+	private String version;
+	private String title;
+	@SerializedName(value = "home_page_url")
+	private String homePageUrl;
+	@SerializedName(value = "feed_url")
+	private String feedUrl;
+	private String description;
+	@SerializedName(value = "user_comment")
+	private String userComment;
+	@SerializedName(value = "next_url")
+	private String nextUrl;
+	private String icon;
+	private String favicon;
+	private Author author;
+	private boolean expired;
+	private ArrayList<Hub> hubs = new ArrayList<Hub>();
+	private ArrayList<Item> items = new ArrayList<Item>();
 
-    /**
+	 /**
      * The version is required.
      * 
      * @return the version as a string
-     * @throws RequiredElementNotPresentException for obvious reasons
      */
-    String version() throws RequiredElementNotPresentException;
-    
-    /** 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	 /** 
      * Title is required.
      * 
      * @return the title
-     * @throws RequiredElementNotPresentException for obvious reasons
      */
-    String title() throws RequiredElementNotPresentException;
-    
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
     /**
      * This is described as "optional but strongly recommended."
      * 
      * @return the URL
      */
-    String homePageUrl();
-    
+	public String getHomePageUrl() {
+		return homePageUrl;
+	}
+
+	public void setHomePageUrl(String homePageUrl) {
+		this.homePageUrl = homePageUrl;
+	}
+
     /**
      * This is described as "optional but strongly recommended."
      * 
      * @return the URL
      */
-    String feedUrl();
-    
-    String description();
-    
-    String userComment();
-    
-    String nextUrl();
-    
-    /**
+	public String getFeedUrl() {
+		return feedUrl;
+	}
+
+	public void setFeedUrl(String feedUrl) {
+		this.feedUrl = feedUrl;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getUserComment() {
+		return userComment;
+	}
+
+	public void setUserComment(String userComment) {
+		this.userComment = userComment;
+	}
+
+	public String getNextUrl() {
+		return nextUrl;
+	}
+
+	public void setNextUrl(String nextUrl) {
+		this.nextUrl = nextUrl;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public String getFavicon() {
+		return favicon;
+	}
+
+	public void setFavicon(String favicon) {
+		this.favicon = favicon;
+	}
+
+	/**
+     * Optional, but if present certain elements within it must be present.
+     * 
+     * @return The author details of the feed; see {@link Author}
+     *  
+     */
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
+	public boolean isExpired() {
+		return expired;
+	}
+
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+
+	public List<Hub> getHubs() {
+		return hubs;
+	}
+
+	public void setHubs(ArrayList<Hub> hubs) {
+		this.hubs = hubs;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
+	}	
+	
+	/**
      * A convenience method to get the contents of nextUrl as a Feed.
      *  
      * @return the next feed
      * @throws IOException on problems
      */
-    Feed nextFeed() throws IOException;
+    public Feed nextFeed() throws IOException {
+    	String nextUrl = this.getNextUrl();
+    	
+    	if (nextUrl == null) {
+    		return null;
+    	}
+    	
+		return DefaultFeed.fromUrl(new URL(nextUrl));
+    }
     
-    String icon();
-    
-    String favicon();
-    
-    /**
-     * Optional, but if present certain elements within it must be present.
-     * 
-     * @return The author details of the feed; see {@link Author}
-     * @throws RequiredElementNotPresentException if the contents of the 
-     * "<code>author</code>" element do not meet their requirements
-     *  
-     */
-    Author author() throws RequiredElementNotPresentException;
-    
-    boolean hasExpired();
-    
-    List<Item> items() throws RequiredElementNotPresentException;
-    
-    /**
-     * Returns the next {@code Item} from the feed.
-     * 
-     * @return the Item
-     */
-    Item nextItem();
-    
-    /**
-     * Tells us whether the feed has another item.
-     * 
-     * @return true if there is a next Item
-     */
-    boolean hasNextItem();
-    
-    List<Hub> hubs();
-    
-    boolean hasAttachments();
-    
-    List<Attachment> attachments();
-
-    boolean hasExtensions();
-    
-    /**
-     * Prints the feed;
-     * 
-     * @return the feed as a string
-     */
-    public String print();
+    @Override
+    public String toString() {    
+        StringBuilder output = new StringBuilder();
+        
+        output.append(getVersion()).append("\n");
+        output.append(getTitle()).append("\n");
+        output.append(getHomePageUrl()).append("\n");
+        output.append(getFeedUrl()).append("\n");
+        output.append(getDescription()).append("\n");
+        output.append(getUserComment()).append("\n");
+        output.append(getNextUrl()).append("\n");
+		output.append(getIcon()).append("\n");
+		output.append(getFavicon()).append("\n");
+		output.append(getAuthor().getName()).append("\n");
+		output.append(getAuthor().getUrl()).append("\n");
+		output.append(getAuthor().getAvatar()).append("\n");
+		output.append(isExpired()).append("\n");
+		output.append(getHubs().size()).append("\n");
+		
+		output.append("---Hubs---").append("\n");
+		
+		for (Hub hub: getHubs()) {
+			output.append(hub.getType()).append("\n");
+			output.append(hub.getUrl()).append("\n");
+		}
+		
+		output.append(getItems().size()).append("\n");
+		
+		output.append("---Items---").append("\n");
+		
+		for (Item item: getItems()) {
+			output.append(item.getId()).append("\n");
+			output.append(item.getUrl()).append("\n");
+			output.append(item.getExternalUrl()).append("\n");
+			output.append(item.getTitle()).append("\n");
+			output.append(item.getContentHtml()).append("\n");
+			output.append(item.getContentText()).append("\n");
+			output.append(item.getSummary()).append("\n");
+			output.append(item.getImage()).append("\n");
+			output.append(item.getBannerImage()).append("\n");
+			output.append(item.getDatePublished()).append("\n");
+			output.append(item.getDateModified()).append("\n");
+			output.append(item.getAuthor()).append("\n");
+			output.append(item.getTags().size()).append("\n");
+			
+			output.append("---Tags---").append("\n");
+			
+			for (String tag: item.getTags()) {
+				output.append(tag).append("\n");
+			}
+			
+			output.append(item.getAttachments().size()).append("\n");
+			
+			output.append("---Attachments---").append("\n");
+			
+			for (Attachment attachment: item.getAttachments()) {
+				output.append(attachment.getUrl()).append("\n");
+				output.append(attachment.getMimeType()).append("\n");
+				output.append(attachment.getTitle()).append("\n");
+				output.append(attachment.getSizeInBytes()).append("\n");
+				output.append(attachment.getDurationInSeconds()).append("\n");
+			}
+		}
+        
+        return output.toString();
+    }
 }

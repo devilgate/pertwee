@@ -8,8 +8,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.google.gson.Gson;
+
 import software.tinlion.pertwee.Author;
-import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
 
 public class FeedAuthorTest {
     
@@ -39,27 +40,28 @@ public class FeedAuthorTest {
     @Test
     public void authorFieldsOk() {
         
-        Author testy = FeedAuthor.fromJson(goodIfIncompleteAuthor);
-        assertEquals("Iain M Banks", testy.name());
-        assertEquals("http://blueguy.com/guy.jpg", testy.avatar());
-        assertEquals("", testy.url());
+    	Gson gson = new Gson();
+		Author testy = gson.fromJson(goodIfIncompleteAuthor.toString(), Author.class);
+        assertEquals("Iain M Banks", testy.getName());
+        assertEquals("http://blueguy.com/guy.jpg", testy.getAvatar());
+        assertEquals(null, testy.getUrl());
     }
     
     @Test
     public void incompleteAuthor() {
         
-        exception.expect(RequiredElementNotPresentException.class);
-        @SuppressWarnings("unused")
-        Author testBad = FeedAuthor.fromJson(badAuthor);
+       	Gson gson = new Gson();
+    	Author testBad = gson.fromJson(badAuthor.toString(), Author.class);
     }
 
     @Test 
     public void completeAuthorOk() {
         
-        Author testComplete = FeedAuthor.fromJson(completeAuthor);
-        assertEquals("Martin McCallion", testComplete.name());
-        assertEquals("http://devilgate.org/blog/", testComplete.url());
-        assertEquals("http://devilgate.org/pic.jpg", testComplete.avatar());
+    	Gson gson = new Gson();
+		Author testComplete = gson.fromJson(completeAuthor.toString(), Author.class);
+        assertEquals("Martin McCallion", testComplete.getName());
+        assertEquals("http://devilgate.org/blog/", testComplete.getUrl());
+        assertEquals("http://devilgate.org/pic.jpg", testComplete.getAvatar());
     }
 }
 ;
