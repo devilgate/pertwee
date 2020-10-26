@@ -19,15 +19,15 @@ import software.tinlion.pertwee.feed.DefaultFeed;
  * various elements of the feed.
  * 
  * This implementation makes a fairly strict interpretation of the spec. 
- * Where an element is marked as "<tt>required</tt>", such as 
- * <tt>version</tt>, for example, a {@code RequiredElementNotPresentException} 
+ * Where an element is marked as "<code>required</code>", such as 
+ * <code>version</code>, for example, a {@code RequiredElementNotPresentException} 
  * will be thrown. This is a RuntimeException, but methods for handling 
  * required elements declare it thrown, to allow client classes to decide
  * how to handle it.
  * 
  * Most of the methods here simply return the comparably-named element from 
- * the provided JSON (for example, <tt>feedUrl</tt> returns the element called 
- * "<tt>feed_url</tt>"). See the spec for detailed explanations of what each 
+ * the provided JSON (for example, <code>feedUrl</code> returns the element called 
+ * "<code>feed_url</code>"). See the spec for detailed explanations of what each 
  * element means.
  * 
  * @author Martin McCallion (martin@tinlion.software)
@@ -89,7 +89,7 @@ public interface Feed {
      * 
      * @return The author details of the feed; see {@link Author}
      * @throws RequiredElementNotPresentException if the contents of the 
-     * "<tt>author</tt>" element do not meet their requirements
+     * "<code>author</code>" element do not meet their requirements
      *  
      */
     Author author() throws RequiredElementNotPresentException;
