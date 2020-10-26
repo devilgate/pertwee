@@ -7,6 +7,10 @@
  */
 
 plugins {
+
+    // Shadow plugin for creating an executable jar.
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
 }
