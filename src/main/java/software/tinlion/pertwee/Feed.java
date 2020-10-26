@@ -30,7 +30,7 @@ import software.tinlion.pertwee.feed.DefaultFeed;
  * "<code>feed_url</code>"). See the spec for detailed explanations of what each 
  * element means.
  * 
- * @author Martin McCallion (martin@tinlion.software)
+ * @author Martin McCallion (martin@devilgate.org)
  * @version 1.0.1
  *
  */

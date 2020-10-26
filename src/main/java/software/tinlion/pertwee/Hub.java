@@ -6,7 +6,7 @@ package software.tinlion.pertwee;
        endpoints that can be used to subscribe to real-time notifications from the publisher of this feed.
    </blockquote>
  * 
- * @author Martin McCallion (martin@tinlion.software)
+ * @author Martin McCallion (martin@devilgate.org)
  *
  */
 public interface Hub {

@@ -11,7 +11,7 @@ import software.tinlion.pertwee.exception.RequiredElementNotPresentException;
        an audio or video file.
    </blockquote>
  * 
- * @author Martin McCallion (martin@tinlion.software)
+ * @author Martin McCallion (martin@devilgate.org)
  *
  */
 public interface Attachment {
