@@ -35,4 +35,7 @@ public interface Item {
 
     public List<String> tags();
 
+    boolean hasAttachments();
+
+    List<Attachment> attachments();
 }

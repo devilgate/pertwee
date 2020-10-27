@@ -204,24 +204,6 @@ public class DefaultFeed implements Feed {
         return false;
     }
 
-    @Override
-    public boolean hasAttachments() {
-        
-        return feedObject.has("attachments") 
-                && feedObject.optJSONArray("attachements") != null
-                && !feedObject.getJSONArray("attachments").isEmpty();
-    }
-
-    @Override
-    public List<Attachment> attachments() {
-        
-        if (hasAttachments()) {
-            
-            return AnAttachment.parseAttachmentsFromJson(feedObject.getJSONArray("attachments"));
-        }
-        return null;
-    }
-    
     public String print() {
         
         StringBuilder output = new StringBuilder();

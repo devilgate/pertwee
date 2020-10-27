@@ -114,10 +114,6 @@ public interface Feed {
     
     List<Hub> hubs();
     
-    boolean hasAttachments();
-    
-    List<Attachment> attachments();
-
     boolean hasExtensions();
     
     /**

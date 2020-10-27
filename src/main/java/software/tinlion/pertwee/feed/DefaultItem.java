@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import software.tinlion.pertwee.Attachment;
 import software.tinlion.pertwee.Author;
 import software.tinlion.pertwee.Item;
 import software.tinlion.pertwee.check.GetIfPresent;
@@ -121,4 +122,24 @@ public class DefaultItem implements Item {
         
         return itemObject.toString();
     }
+
+    @Override
+    public boolean hasAttachments() {
+
+        return itemObject.has("attachments")
+               && itemObject.optJSONArray("attachements") != null
+               && !itemObject.getJSONArray("attachments").isEmpty();
+    }
+
+    @Override
+    public List<Attachment> attachments() {
+
+        if (hasAttachments()) {
+
+            return AnAttachment.parseAttachmentsFromJson(itemObject.getJSONArray("attachments"));
+        }
+        return null;
+    }
+
+
 }
