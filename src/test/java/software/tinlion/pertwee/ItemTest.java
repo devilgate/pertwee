@@ -15,7 +15,7 @@ import software.tinlion.pertwee.feed.DefaultItem;
 import software.tinlion.pertwee.feed.FeedAuthor;
 
 public class ItemTest {
-    
+
     private static final String TAG3 = "tag3";
 
     private static final String TAG2 = "tag2";
@@ -30,130 +30,155 @@ public class ItemTest {
 
     private static final String THE_URL = "https://example.org/second-item";
 
+    private static final String LANGUAGE = "en-GB";
+
     private static final String HTML_THIS_IS_A_SECOND_ITEM = "<p>This is a second item.</p>";
 
     private static final String THIS_IS_A_SECOND_ITEM = "This is a second item.";
     // UnitOfWork_StateUnderTest_ExpectedBehavior
-    
+
     private Item item;
     private Item itemWithAuthor;
+    private Item itemWithAuthors;
     private Author feedAuthor;
 
     @Before
     public void setUp() throws Exception {
-        
+
     	JSONObject objFeedAuthor = new JSONObject();
     	objFeedAuthor.put("name", "Martin McCallion");
     	objFeedAuthor.put("url", "http://devilgate.org/blog/");
     	objFeedAuthor.put("avatar", "http://devilgate.org/pic.jpg");
     	feedAuthor = FeedAuthor.fromJson(objFeedAuthor);
-    	
+
         JSONObject objItem = new JSONObject();
         objItem.put("id", "001");
         objItem.put("content_text", THIS_IS_A_SECOND_ITEM);
         objItem.put("content_html", HTML_THIS_IS_A_SECOND_ITEM);
         objItem.put("url", THE_URL);
+        objItem.put("language", LANGUAGE);
         objItem.put("external_url", "");
         objItem.put("summary", NOT_MUCH);
         objItem.put("date_modified", AN_ARBITRARY_TIME);
-        item = DefaultItem.parseItem(objItem, feedAuthor);
-        
+        item = DefaultItem.parseItem(objItem, feedAuthor, null);
+
         // Second item is first but with its own Author and tags
         JSONObject objItem2 = new JSONObject(objItem);
         JSONObject objAuthor = new JSONObject();
         objAuthor.put("name", MR_BRIGHTSIDE);
         objItem2.put("author", objAuthor);
         objItem2.put("tags", new JSONArray(Arrays.asList(TAG1, TAG2, TAG3)));
-        itemWithAuthor = DefaultItem.parseItem(objItem2, feedAuthor);
+        itemWithAuthor = DefaultItem.parseItem(objItem2, feedAuthor, null);
+
+        // Third item is first but with its own Author and tags
+        JSONObject objItem3 = new JSONObject(objItem);
+        JSONObject objAuthor3 = new JSONObject();
+        objAuthor3.put("name", MR_BRIGHTSIDE);
+        JSONArray objAuthors = new JSONArray(new Object[] {objAuthor3});
+        objItem3.put("authors", objAuthors);
+        objItem3.put("tags", new JSONArray(Arrays.asList(TAG1, TAG2, TAG3)));
+        itemWithAuthors = DefaultItem.parseItem(objItem3, feedAuthor, null);
     }
 
     @Test
     public final void id_created_returnsCorrectValue() {
-        
+
         assertEquals("001", item.id());
     }
 
     @Test
     public final void contentText_created_returnsCorrectValue() {
-        
+
         assertEquals(THIS_IS_A_SECOND_ITEM, item.contentText());
     }
 
     @Test
     public final void contentHtml_created_returnsCorrectValue() {
-        
+
         assertEquals(HTML_THIS_IS_A_SECOND_ITEM, item.contentHtml());
     }
 
     @Test
     public final void url_created_returnsCorrectValue() {
-        
+
         assertEquals(THE_URL, item.url());
     }
 
     @Test
+    public final void language_created_returnsCorrectValue() {
+
+        assertEquals(LANGUAGE, item.language());
+    }
+
+    @Test
     public final void externalUrl_created_returnsEmptyString() {
-        
+
         assertEquals("", item.externalUrl());
     }
 
     @Test
     public final void title_notSet_returnsEmptyString() {
-        
+
         assertEquals("", item.title());
     }
 
     @Test
     public final void summary_created_returnsCorrectValue() {
-        
+
         assertEquals(NOT_MUCH, item.summary());
     }
 
     @Test
     public final void image_notSet_returnsEmptyString() {
-        
+
         assertEquals("", item.image());
     }
 
     @Test
     public final void bannerImage_notSet_returnsEmptyString() {
-        
+
         assertEquals("", item.bannerImage());
     }
 
     @Test
     public final void datePublished_notSet_returnsEmptyString() {
-        
+
         assertEquals("", item.datePublished());
     }
 
     @Test
     public final void DateModified_created_returnsCorrectValue() {
-        
+
         assertEquals(AN_ARBITRARY_TIME, item.dateModified());
     }
 
     @Test
     public final void author_notSetInItem_returnsFeedAuthor() {
-        
+
         assertEquals(feedAuthor, item.author());
     }
-    
+
     @Test
     public final void author_setInItem_returnsItemAuthor() {
-        
+
         assertEquals(MR_BRIGHTSIDE, itemWithAuthor.author().name());
     }
 
     @Test
+    public final void author_setInItem_returnsItemAuthors() {
+
+        assertEquals(MR_BRIGHTSIDE, itemWithAuthors.authors().get(0).name());
+    }
+
+    @Test
     public final void tags_notSet_returnsEmptyList() {
-        
+
         assertTrue(item.tags().isEmpty());
     }
-    
-    @Test 
+
+    @Test
     public final void tags_set_returnsListOfStrings() {
-        
+
         List<String> tags = itemWithAuthor.tags();
         assertEquals(TAG1, tags.get(0));
         assertEquals(TAG2, tags.get(1));

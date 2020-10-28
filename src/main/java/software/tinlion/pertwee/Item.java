@@ -32,8 +32,11 @@ public interface Item {
     public String dateModified();
 
     public Author author();
+    List<Author> authors() throws RequiredElementNotPresentException;
 
     public List<String> tags();
+
+    public String language();
 
     boolean hasAttachments();
 
